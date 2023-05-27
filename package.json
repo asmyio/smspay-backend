@@ -6,8 +6,6 @@
   "author": "farhan-helmy <farhanhlmy@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "global": "^4.4.0",
-    "serverless": "^3.31.0",
     "serverless-python-requirements": "^6.0.0"
   }
 }
