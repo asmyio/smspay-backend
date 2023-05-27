@@ -5,7 +5,7 @@ package:
 
 provider:
   name: aws
-  runtime: python3.8
+  runtime: python3.9
   region: ap-southeast-1
   stage: ${opt:stage, "dev"}
 
@@ -19,7 +19,7 @@ custom:
       name: smspay-backend
       description: Backend for smspay
       compatibleRuntimes:
-        - python3.8
+        - python3.9
 
 functions:
   app:

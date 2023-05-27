@@ -6,40 +6,50 @@ import requests
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from mangum import Mangum
 
 app = FastAPI()
 secret_key = pyotp.random_base32()
 totp = pyotp.TOTP(secret_key, interval=120)
+
+
 class VerifyOTPRequest(BaseModel):
     merchid: str
     otp: str
     userid: str
     amount: float
 
+
 class UserIDRequest(BaseModel):
     merchid: str
     userid: str
     amount: float
 
+
 def send_sms(userid, message):
-    cred = os.getenv('ADASMS_CRED')
+    cred = os.environ['ADASMS_CRED']
     if cred:
-        payload = {
-            '_token': cred,
-            'phone': userid,
-            'message': message,
-        }
-        response = requests.post('https://terminal.adasms.com/api/v1/send', files=payload)
+        print("Sending SMS")
+        payload = (
+            ('_token', (None, cred)),
+            ('phone', (None, userid)),
+            ('message', (None, message)),
+        )
+
+        response = requests.post(
+            'https://terminal.adasms.com/api/v1/send', files=payload)
         if response.status_code == 200:
             return "SMS sent successfully."
         else:
-            return f'Failed to send SMS. Status code: {response.status_code}'
+            return f'Failed to send SMS. Status code: {response}'
     else:
         return "cred is empty"
+
 
 @app.get("/health")
 def get_health():
     return {"health": "ok"}
+
 
 @app.post("/otp")
 def get_otp(request: UserIDRequest):
@@ -54,12 +64,13 @@ def get_otp(request: UserIDRequest):
     message = f'[DuitNow SMS] Merchant {merchid} RM {formatted_amount} - OTP code {otp} - expires on {formatted_datetime}'
     status = send_sms(userid, message)
     return {
-        "otp" : otp,
-        "phone" : userid,
-        "amount" : amount,
-        "message" : message,
-        "sms_status" : status,
-        }
+        "otp": otp,
+        "phone": userid,
+        "amount": amount,
+        "message": message,
+        "sms_status": status,
+    }
+
 
 @app.post("/verify")
 def verify_otp(request: VerifyOTPRequest):
@@ -79,4 +90,7 @@ def verify_otp(request: VerifyOTPRequest):
         "valid": True,
         "message": message,
         "sms_status": status,
-        }
+    }
+
+
+handler = Mangum(app)

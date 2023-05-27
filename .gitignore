@@ -2,3 +2,10 @@ app/__pychache__/*
 app/__pycache__/main.cpython-311.pyc
 app/__pycache__/pay.cpython-311.pyc
 node_modules/*
+.serverless/*
+.serverless/app.zip
+.serverless/cloudformation-template-update-stack.json
+.serverless/pythonRequirements.zip
+.serverless/requirements
+.serverless/requirements.txt
+.serverless/serverless-state.json
