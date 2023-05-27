@@ -18,9 +18,9 @@ jobs:
         with:
           node-version: 18
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: npm ci
       - name: Install serverless
-        run: yarn add global serverless
+        run: npm i -g serverless
       - name: Configure AWS CLI
         run: sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY\
       - name: Deploy to AWS
