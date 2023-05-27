@@ -1,0 +1,11 @@
+{
+  "name": "smspay-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@farhan:asmyio/smspay-backend.git",
+  "author": "farhan-helmy <farhanhlmy@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "serverless-python-requirements": "^6.0.0"
+  }
+}

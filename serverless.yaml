@@ -1,0 +1,45 @@
+service: smspay-backend
+
+package:
+  individually: true
+
+provider:
+  name: aws
+  runtime: python3.10
+  region: ap-southeast-1
+  stage: ${opt:stage, "dev"}
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    layer:
+      name: smspay-backend
+      description: Backend for smspay
+      compatibleRuntimes:
+        - python3.10
+
+functions:
+  app:
+    package:
+      include:
+        - "app/main.py"
+      exclude:
+        - "requirements.txt"
+        - "package.json"
+        - "package-lock.json"
+        - ".serverless/**"
+        - ".virtualenv/**"
+        - "node_modules/**"
+
+    handler: main.handler
+    environment:
+      STAGE: ${self:provider.stage}
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
+    events:
+      - http:
+          method: any
+          path: /{proxy+}
