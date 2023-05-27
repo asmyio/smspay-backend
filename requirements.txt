@@ -2,3 +2,4 @@ fastapi>=0.95.2
 uvicorn>=0.22.0
 pyotp>=2.8.0
 mangum>=0.17.0
+requests==2.26.0
