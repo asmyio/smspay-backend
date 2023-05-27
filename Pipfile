@@ -7,6 +7,7 @@ name = "pypi"
 fastapi = ">=0.95.2"
 uvicorn = ">=0.22.0"
 pyotp = ">=2.8.0"
+mangum = "*"
 
 [dev-packages]
 

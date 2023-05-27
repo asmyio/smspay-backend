@@ -1,6 +1,8 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import pyotp
+from mangum import Mangum
+
 
 app = FastAPI()
 secret_key = pyotp.random_base32()
@@ -34,3 +36,5 @@ def verify_otp(request: VerifyOTPRequest):
     if not is_valid:
         raise HTTPException(status_code=400, detail="Invalid OTP")
     return {"valid": True}
+
+handler = Mangum(app)
