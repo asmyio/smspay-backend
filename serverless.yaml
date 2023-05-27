@@ -25,7 +25,7 @@ functions:
   app:
     package:
       include:
-        - "app/main.py"
+        - "main.py"
       exclude:
         - "requirements.txt"
         - "package.json"
