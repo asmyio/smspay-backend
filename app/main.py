@@ -10,6 +10,7 @@ class VerifyOTPRequest(BaseModel):
 
 class UserIDRequest(BaseModel):
     userid: str
+    amount: int
 
 @app.get("/health")
 def get_health():
@@ -19,9 +20,11 @@ def get_health():
 def get_otp(request: UserIDRequest):
     otp = totp.now()
     userid = request.userid
+    amount = request.amount
     return {
         "otp" : otp,
         "phone" : userid,
+        "amount" : amount,
         "message" : "You have 30 seconds before the token expires."}
 
 @app.post("/verify")
@@ -31,7 +34,3 @@ def verify_otp(request: VerifyOTPRequest):
     if not is_valid:
         raise HTTPException(status_code=400, detail="Invalid OTP")
     return {"valid": True}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
